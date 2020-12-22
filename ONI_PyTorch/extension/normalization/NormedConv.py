@@ -91,6 +91,8 @@ class ONINorm(torch.nn.Module):
         #print(W.matmul(W.transpose(1,2)))
         # W = oni_py.apply(weight, self.T, ctx.groups)
         return W.view_as(weight)
+        #返回被视作与给定的tensor相同大小的原tensor。
+        #即按照weight的形状返回W。
 
     def extra_repr(self):
         fmt_str = ['T={}'.format(self.T)]
@@ -213,8 +215,10 @@ class ONI_Conv2d(torch.nn.Conv2d):
 
     def forward(self, input_f: torch.Tensor) -> torch.Tensor:
         weight_q = self.weight_normalization(self.weight)
+        #这里的self.weight()是对父类继承时获得的变量，应该就是卷积核的参数。
         weight_q = weight_q * self.WNScale
         out = F.conv2d(input_f, weight_q, self.bias, self.stride, self.padding, self.dilation, self.groups)
+        #每次前向反馈之前，先对参数做正交化（或者如它函数名所说，正则化）。
         return out
 
 class ONI_Linear(torch.nn.Linear):

@@ -3,6 +3,7 @@ import os
 import time
 import argparse
 import shutil
+#高级文件操作模块
 import sys
 
 import torch
@@ -17,6 +18,7 @@ sys.path.append('..')
 import models
 import data_loader
 import extension as ext
+#这个extension是什么？
 from extension.progress_bar import format_time
 
 
@@ -62,6 +64,7 @@ class ClassificationLarge:
         return
 
     def add_arguments(self):
+        #这个函数用来解析shell里传进来的参数
         parser = argparse.ArgumentParser('ImageNet Classification')
         ext.normalization.add_arguments(parser)
         data_loader.add_arguments(parser)
